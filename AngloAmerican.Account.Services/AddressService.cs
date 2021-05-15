@@ -8,7 +8,7 @@ namespace AngloAmerican.Account.Services
 {
     public class AddressService : IAddressService
     {
-        // TO DO: read RandomuserRequestUri through config
+        // TO DO: read Uri though config : Options pattern ::IOptions
         private const string RandomuserRequestUri = "https://randomuser.me/api/?nat=gb";
 
         private readonly ILogger<AddressService> _logger;
