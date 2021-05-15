@@ -2,6 +2,7 @@
 using AngloAmerican.Account.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,12 +13,14 @@ namespace AngloAmerican.Account.Api.Controllers
     [Route("accounts")]
     public class AccountController : ControllerBase
     {
+        private readonly ILogger<AccountController> _logger;
         private readonly IAccountRepository _accountRepository;
         private readonly IAddressService _addressService;
         private readonly IBalanceChecker _balanceChecker;
 
-        public AccountController(IAccountRepository accountRepository, IAddressService addressService,IBalanceChecker balanceChecker)
+        public AccountController(ILogger<AccountController> logger,IAccountRepository accountRepository, IAddressService addressService,IBalanceChecker balanceChecker)
         {
+            _logger = logger;
             _accountRepository = accountRepository;
             _addressService = addressService;
             _balanceChecker = balanceChecker;
@@ -54,6 +57,7 @@ namespace AngloAmerican.Account.Api.Controllers
             else
             {
                 // TO DO : Log Information
+                _logger.LogInformation("Failed to add balance");
             }
             return NoContent();
         }
@@ -106,6 +110,7 @@ namespace AngloAmerican.Account.Api.Controllers
                 return 3;
             }
 
+            _logger.LogError("Invalid AccountType");
             // TO DO : Throw custom exception
             throw new Exception("Invalid Balance");
         }
