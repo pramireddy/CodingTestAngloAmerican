@@ -2,6 +2,6 @@
 {
     public interface IBalanceChecker
     {
-        bool Process(int amount, Notification notification, ExternalApi eA, string lastName);
+        bool Process(int amount, string lastName);
     }
 }

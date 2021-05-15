@@ -1,6 +1,8 @@
-﻿namespace AngloAmerican.Account.Services
+﻿using AngloAmerican.Account.Services.Interfaces;
+
+namespace AngloAmerican.Account.Services
 {
-    public class Notification
+    public class Notification : INotification
     {
         public void SendEmail(string title, string body)
         {

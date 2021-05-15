@@ -37,6 +37,8 @@ namespace AngloAmerican.Account.Api
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<IBalanceChecker, BalanceChecker>();
+            services.AddScoped<IExternalApi, ExternalApi>();
+            services.AddScoped<INotification, Notification>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

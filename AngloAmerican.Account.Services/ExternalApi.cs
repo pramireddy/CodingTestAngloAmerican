@@ -1,37 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using AngloAmerican.Account.Services.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AngloAmerican.Account.Services
 {
-    // TODO: Improve and make the code more readable.
-    public class ExternalApi
+    public class ExternalApi : IExternalApi
     {
-        private List<string> _names = new List<string> {"Rene", "Kirk", "Escarole"};
+        private readonly List<string> _names = new List<string> { "Rene", "Kirk", "Escarole" };
 
-        // returns true if balance is valid
+        /// <summary>
+        /// If the person is in the list and balance is greater than 10,000 return false
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="lastName"></param>
+        /// <returns>true if balance is valid</returns>
         public bool CheckAccountBalance(int amount, string lastName)
         {
-            bool isFalse = false;
-
-            // if the person is in the list and balance is greater than 10,000 return false
-            foreach (var n in _names)
-            {
-                isFalse = true;
-                if (n == lastName)
-                {
-                    if (amount > 10000)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
-
-                return isFalse;
-            }
-
-            return isFalse;
+            return _names.Any(x => x.Contains(lastName) && amount <= 10000);
         }
     }
 }

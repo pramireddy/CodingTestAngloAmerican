@@ -3,9 +3,7 @@ using AngloAmerican.Account.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AngloAmerican.Account.Api.Controllers
@@ -16,10 +14,13 @@ namespace AngloAmerican.Account.Api.Controllers
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IAddressService _addressService;
-        public AccountController(IAccountRepository accountRepository,IAddressService addressService)
+        private readonly IBalanceChecker _balanceChecker;
+
+        public AccountController(IAccountRepository accountRepository, IAddressService addressService,IBalanceChecker balanceChecker)
         {
             _accountRepository = accountRepository;
             _addressService = addressService;
+            _balanceChecker = balanceChecker;
         }
 
         // GET: /accounts
@@ -27,14 +28,13 @@ namespace AngloAmerican.Account.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<AccountResponse>), StatusCodes.Status200OK)]
         public async Task<IEnumerable<AccountResponse>> Get()
         {
-
             var accounts = _accountRepository.GetAllAccounts();
             var response = await MapToAccountResponse(accounts);
 
             return response;
         }
 
-        // POST api/<ValuesController>
+        // POST /accounts
         [HttpPost]
         [ProducesResponseType(typeof(ActionResult), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ActionResult), StatusCodes.Status400BadRequest)]
@@ -47,20 +47,16 @@ namespace AngloAmerican.Account.Api.Controllers
                 Balance = accountRequest.Balance
             };
 
-           _accountRepository.Add(account);
-
+            if(_balanceChecker.Process(accountRequest.Balance, accountRequest.LastName))
+            {
+                _accountRepository.Add(account);
+            }
+            else
+            {
+                // TO DO : Log Information
+            }
             return NoContent();
         }
-
-        /* TODO
-            - Create a REST API to get all the accounts
-                For every account you need to use AddressService to load an address (City and PostCode)
-                You can use AccountResponse class
-                
-            - Create a REST API to save an account 
-                Call BalanceChecker to verify if you can save
-                You can use AccountRequest class as a payload
-         */
 
         /// <summary>
         /// TO DO: To Improve Peformance
@@ -76,14 +72,14 @@ namespace AngloAmerican.Account.Api.Controllers
 
             foreach (var account in accounts)
             {
-                var accountResponse = await GetAccountResponse(account);
+                var accountResponse = await MapAccountToAccountResponse(account);
                 result.Add(accountResponse);
             }
 
             return result;
         }
 
-        private async Task<AccountResponse> GetAccountResponse(AccountModel account)
+        private async Task<AccountResponse> MapAccountToAccountResponse(AccountModel account)
         {
             return new AccountResponse
             {
