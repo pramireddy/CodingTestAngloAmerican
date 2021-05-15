@@ -25,7 +25,6 @@ namespace AngloAmerican.Account.Services
                 new AccountModel {FirstName = "Rene", LastName = "Knight", Balance = 5555},
             };
 
-
         public List<AccountModel> GetAllAccounts()
             => _accounts;
 

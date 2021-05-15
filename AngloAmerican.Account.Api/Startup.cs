@@ -1,5 +1,6 @@
 using AngloAmerican.Account.Services;
 using AngloAmerican.Account.Services.Interfaces;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +20,8 @@ namespace AngloAmerican.Account.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddFluentValidation(x=>x.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddCors(options => options.AddDefaultPolicy(
                 builder =>

@@ -10,6 +10,7 @@ namespace AngloAmerican.Account.Services
     {
         // TO DO: read RandomuserRequestUri through config
         private const string RandomuserRequestUri = "https://randomuser.me/api/?nat=gb";
+
         private readonly ILogger<AddressService> _logger;
         private readonly IHttpClientFactory _httpClientFactory;
 

@@ -22,9 +22,9 @@ namespace AngloAmerican.Account.Api.Controllers
             _addressService = addressService;
         }
 
-        // GET: /a
+        // GET: /accounts
         [HttpGet]
-        [ProducesResponseType(typeof(ActionResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<AccountResponse>), StatusCodes.Status200OK)]
         public async Task<IEnumerable<AccountResponse>> Get()
         {
 
@@ -32,6 +32,24 @@ namespace AngloAmerican.Account.Api.Controllers
             var response = await MapToAccountResponse(accounts);
 
             return response;
+        }
+
+        // POST api/<ValuesController>
+        [HttpPost]
+        [ProducesResponseType(typeof(ActionResult), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ActionResult), StatusCodes.Status400BadRequest)]
+        public IActionResult Post([FromBody] AccountRequest accountRequest)
+        {
+            var account = new AccountModel
+            {
+                FirstName = accountRequest.FirstName,
+                LastName = accountRequest.LastName,
+                Balance = accountRequest.Balance
+            };
+
+           _accountRepository.Add(account);
+
+            return NoContent();
         }
 
         /* TODO
@@ -44,6 +62,14 @@ namespace AngloAmerican.Account.Api.Controllers
                 You can use AccountRequest class as a payload
          */
 
+        /// <summary>
+        /// TO DO: To Improve Peformance
+        /// 1. Apply Parallel Process
+        /// 2. Cache - Addesses
+        /// 3. Include Address if it's required
+        /// </summary>
+        /// <param name="accounts"></param>
+        /// <returns></returns>
         private async Task<IEnumerable<AccountResponse>> MapToAccountResponse(IEnumerable<AccountModel> accounts)
         {
             var result = new List<AccountResponse>();
