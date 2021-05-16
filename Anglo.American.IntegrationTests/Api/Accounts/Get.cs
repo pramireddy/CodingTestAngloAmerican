@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Anglo.American.IntegrationTests.Api
+namespace Anglo.American.IntegrationTests.Api.Accounts
 {
     public class Get : IClassFixture<WebApplicationFactory<Startup>>
     {
