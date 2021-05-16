@@ -101,7 +101,7 @@ namespace AngloAmerican.Account.Api.Controllers
             {
                 return 1;
             }
-            else if (balance > 5001 && balance <= 10000)
+            else if (balance >= 5001 && balance <= 10000)
             {
                 return 2;
             }
