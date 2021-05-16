@@ -34,7 +34,8 @@ namespace AngloAmerican.Account.Api
 
             services.AddHttpClient();
 
-            services.AddScoped<IAccountRepository, AccountRepository>();
+            //services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddSingleton<IAccountRepository, AccountRepository>();
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<IBalanceChecker, BalanceChecker>();
             services.AddScoped<IExternalApi, ExternalApi>();

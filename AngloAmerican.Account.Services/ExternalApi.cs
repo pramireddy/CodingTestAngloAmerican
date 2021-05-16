@@ -13,10 +13,20 @@ namespace AngloAmerican.Account.Services
         /// </summary>
         /// <param name="amount"></param>
         /// <param name="lastName"></param>
-        /// <returns>true if balance is valid</returns>
+        /// <returns>true if person is in list and the balance is valid</returns>
         public bool CheckAccountBalance(int amount, string lastName)
         {
-            return _names.Any(x => x.Contains(lastName) && amount <= 10000);
+            bool isFalse = false;
+
+            foreach (var n in _names)
+            {
+                isFalse = true;
+                if (n == lastName)
+                {
+                    return amount <= 10000;
+                }
+            }
+            return isFalse;
         }
     }
 }

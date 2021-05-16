@@ -105,7 +105,7 @@ namespace AngloAmerican.Account.Api.Controllers
             {
                 return 2;
             }
-            else if (balance > 10001)
+            else if (balance >= 10001)
             {
                 return 3;
             }
