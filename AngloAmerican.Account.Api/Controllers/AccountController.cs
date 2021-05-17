@@ -3,7 +3,6 @@ using AngloAmerican.Account.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,7 +17,7 @@ namespace AngloAmerican.Account.Api.Controllers
         private readonly IAddressService _addressService;
         private readonly IBalanceChecker _balanceChecker;
 
-        public AccountController(ILogger<AccountController> logger,IAccountRepository accountRepository, IAddressService addressService,IBalanceChecker balanceChecker)
+        public AccountController(ILogger<AccountController> logger, IAccountRepository accountRepository, IAddressService addressService, IBalanceChecker balanceChecker)
         {
             _logger = logger;
             _accountRepository = accountRepository;
@@ -50,7 +49,7 @@ namespace AngloAmerican.Account.Api.Controllers
                 Balance = accountRequest.Balance
             };
 
-            if(_balanceChecker.Process(accountRequest.Balance, accountRequest.LastName))
+            if (_balanceChecker.Process(accountRequest.Balance, accountRequest.LastName))
             {
                 _accountRepository.Add(account);
             }
@@ -101,18 +100,14 @@ namespace AngloAmerican.Account.Api.Controllers
             {
                 return 1;
             }
-            else if (balance >= 5001 && balance <= 10000)
+            else if (balance <= 10000)
             {
                 return 2;
             }
-            else if (balance >= 10001)
+            else
             {
                 return 3;
             }
-
-            _logger.LogError("Invalid AccountType");
-            // TO DO : Throw custom exception
-            throw new Exception("Invalid Balance");
         }
     }
 }
